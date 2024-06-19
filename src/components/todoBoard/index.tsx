@@ -2,6 +2,7 @@
 
 import { useDragAndDrop } from '@formkit/drag-and-drop/react';
 import SmartBar from '@/components/smartBar';
+import { useListStore } from './store.board';
 
 const TODO_ITEMS = [
   'AI Fish or Phish',
@@ -15,6 +16,9 @@ const TODO_ITEMS = [
 const DONE_ITEMS = ['Dolphin Comm Sim'];
 
 export default function TodoBoard() {
+  const TodoItemList = useListStore((s) => s.TodoItem);
+  const SetTodo = useListStore((s) => s.SetTodoItem);
+
   const [todoList, todoItems, setTodoItems] = useDragAndDrop<
     HTMLUListElement,
     string
@@ -24,17 +28,17 @@ export default function TodoBoard() {
   const [doneList, doneItems, setDoneItems] = useDragAndDrop<
     HTMLUListElement,
     string
-  >(DONE_ITEMS, {
+  >(TodoItemList.length > 0 ? TodoItemList : DONE_ITEMS, {
     group: 'todoList',
   });
-
+  SetTodo(todoItems);
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-acqua-soft-white">
       <h1 className="text-3xl font-bold text-acqua-deep-blue my-6">
         Acqua Board
       </h1>
       <SmartBar
-        todoItems={todoItems}
+        todoItems={TodoItemList}
         doneItems={doneItems}
         setTodoItems={setTodoItems}
         setDoneItems={setDoneItems}
@@ -44,7 +48,7 @@ export default function TodoBoard() {
           ref={todoList}
           className="bg-acqua-yellow rounded-lg p-4 shadow-md w-80 h-96"
         >
-          {todoItems.map((todo) => (
+          {TodoItemList.map((todo) => (
             <li className="p-2 bg-white rounded-lg shadow mb-2" key={todo}>
               {todo}
             </li>

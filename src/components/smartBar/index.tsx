@@ -19,7 +19,6 @@ export default function SmartBar({
 
   const handleSend = () => {
     if (value === '') return;
-
     const wantedItemInTodo = todoItems.find((item) => item === value);
     const wantedItemInDone = doneItems.find((item) => item === value);
 
@@ -35,7 +34,6 @@ export default function SmartBar({
 
     setValue('');
   };
-
   return (
     <div className="flex items-center gap-4 p-4 bg-acqua-soft-white">
       <input
